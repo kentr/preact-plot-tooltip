@@ -1,0 +1,11 @@
+@use '@material/elevation/mixins' as elevation-mixins;
+@use '@material/dom/dom';
+@use '@material/feature-targeting/feature-targeting';
+@use '@material/typography/typography';
+@import '@material/tooltip/tooltip';
+
+.home {
+	padding: 56px 20px;
+	min-height: 100%;
+	width: 100%;
+}

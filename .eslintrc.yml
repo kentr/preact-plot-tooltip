@@ -1,0 +1,40 @@
+env:
+  browser: true
+  es2021: true
+extends:
+  # Didn't like the results of `eslint-config-preact`, so
+  # react rules are configured manually.
+  - eslint:recommended
+  - plugin:react/recommended
+  - plugin:react-hooks/recommended
+  - plugin:@typescript-eslint/recommended
+  - plugin:jsx-a11y/recommended
+parser: "@typescript-eslint/parser"
+parserOptions:
+  ecmaFeatures:
+    jsx: false
+  ecmaVersion: latest
+  ignorePatterns:
+    - build/
+  sourceType: module
+plugins:
+  - "@typescript-eslint"
+rules:
+  array-bracket-spacing:
+    - error
+    - always
+  object-curly-spacing:
+    - error
+    - always
+  arrow-parens: error
+  no-confusing-arrow: error
+  comma-dangle:
+    - error
+    - arrays: always-multiline
+      objects: always-multiline
+      imports: always-multiline
+      exports: always-multiline
+      functions: never
+  react/no-unknown-property: off
+  react/prop-types: off
+  react/react-in-jsx-scope: off

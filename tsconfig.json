@@ -1,0 +1,25 @@
+{
+  "extends": "@tsconfig/create-react-app/tsconfig.json",
+  "compilerOptions": {
+    "jsxImportSource": "preact",
+    "noEmit": false,
+    "target": "esnext", /* Keep output close to source and let consumer transpile as desired. */
+    "removeComments": true,
+    "declaration": true,
+    "outDir": "dist",
+    "noEmitOnError": true,
+    "strictNullChecks": true,
+    "baseUrl": ".",
+    "paths": {
+      "@observablehq/plot": [
+        "node_modules/@observablehq/plot/src"
+      ],
+      "@observablehq/plot/options": [
+        "node_modules/@observablehq/plot/src/options"
+      ]
+    }
+  },
+  "include": [
+    "src"
+  ]
+}
