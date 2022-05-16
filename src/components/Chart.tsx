@@ -21,6 +21,7 @@ import {
 } from "@observablehq/plot/options";
 import { rectY, type Rect } from "../plot/marks/rect";
 import { MDCTooltip } from "@material/tooltip";
+import Throbber from "./Throbber";
 
 const formatToFixed = format(".2f");
 
@@ -56,11 +57,24 @@ function Chart() {
 
   }, [ chart ]);
 
-  if (!chart) {
-    return null;
-  }
-
-  return <div dangerouslySetInnerHTML={{ __html: chart.outerHTML }} />;
+  return (
+    <div
+      style={{
+        height: 400,
+        width: 640,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {!chart &&
+        <Throbber />
+      }
+      {chart &&
+        <div dangerouslySetInnerHTML={{ __html: chart.outerHTML }} />
+      }
+    </div>
+  );
 }
 
 function getChart(data: Datum[]): SVGElement | undefined {

@@ -1,0 +1,47 @@
+@use "sass:color";
+@use "../../style/index.scss" as main;
+
+$dark: main.$color;
+$light: color.change($dark, $alpha: .2);
+$duration: 2000ms;
+$start-delay: 50ms;
+
+@keyframes frames {
+  0% {
+    background: $light;
+  }
+  10% {
+    background: $dark;
+  }
+  40% {
+    background: $light;
+  }
+}
+/* :not(:required) hides these rules from IE9 and below */
+.throbber:not(:required) {
+  animation: frames $duration $start-delay + 150ms infinite ease-out;
+  background: $light;
+  display: inline-block;
+  position: relative;
+  text-indent: -9999px;
+  width: 0.9em;
+  height: 1.5em;
+  margin: 0 1.6em;
+}
+.throbber:not(:required):before, .throbber:not(:required):after {
+  background: $light;
+  content: '\x200B';
+  display: inline-block;
+  width: 0.9em;
+  height: 1.5em;
+  position: absolute;
+  top: 0;
+}
+.throbber:not(:required):before {
+  animation: frames $duration $start-delay infinite ease-out;
+  left: -1.6em;
+}
+.throbber:not(:required):after {
+  animation: frames $duration $start-delay + 300ms infinite ease-out;
+  right: -1.6em;
+}
