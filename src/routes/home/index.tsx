@@ -1,4 +1,4 @@
-import { FunctionalComponent, h } from "preact";
+import { FunctionalComponent } from "preact";
 import Chart from "../../components/Chart";
 import style from "./style.scss";
 
