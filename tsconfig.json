@@ -16,10 +16,13 @@
       ],
       "@observablehq/plot/options": [
         "node_modules/@observablehq/plot/src/options"
-      ]
+      ],
+      "@observablehq/plot/transforms": [
+        "node_modules/@observablehq/plot/src/transforms"
+      ],
     }
   },
   "include": [
     "src"
-  ]
+, "tmp/ChartSimple.tsx"  ]
 }

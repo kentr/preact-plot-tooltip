@@ -35,6 +35,8 @@ function Chart() {
         const tooltip = new MDCTooltip(el);
         tooltip.setShowDelay(80);
         tooltip.setHideDelay(40);
+        // Add space between target & tooltip;
+        tooltip.setAnchorBoundaryType(1);
       });
     }
   }, [ chart ]);
@@ -50,7 +52,10 @@ function Chart() {
       }}
     >
       {!chart && <Throbber />}
-      {chart && <div dangerouslySetInnerHTML={{ __html: chart.outerHTML }} />}
+      {chart &&
+        // Output from Plot is assumed to be safe.
+        <div dangerouslySetInnerHTML={{ __html: chart.outerHTML }} />
+      }
     </div>
   );
 }

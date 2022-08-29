@@ -1,7 +1,7 @@
 const formatFixed = format(".2f");
 const formatPercent = format(".1%");
 
-function getChart<Datum, Options>( data: Datum[], options: Options ): SVGSVGElement {
+function getChart<Datum, Options>( data: Datum[], markOptions: Options ): SVGSVGElement {
 
   const reduceMethod: BinReduceMethodWithScope<Datum, MarkProperties["title"], number> = (
     index,
@@ -42,7 +42,7 @@ function getChart<Datum, Options>( data: Datum[], options: Options ): SVGSVGElem
   const outputs = {
     y: {
       scope: "data",
-      label: "Foo label",
+      label: "Frequency",
       reduce: (I: number[], V: Datum[], basis?: number) => {
         return I.length / (basis ?? 1)
       },
@@ -50,11 +50,15 @@ function getChart<Datum, Options>( data: Datum[], options: Options ): SVGSVGElem
     title: titleOutput,
   };
 
-  const optionsTransformed = binX<Options>(outputs, options);
+  const optionsTransformed = binX<Options>(outputs, markOptions);
 
   const mark: Rect<Datum> = rectY<Datum>(data, optionsTransformed);
 
   const chart = plot({
+    class: "plot",
+    style: {
+      background: "transparent",
+    },
     x: {
       round: true,
     },
