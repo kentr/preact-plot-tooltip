@@ -38,3 +38,7 @@ rules:
   react/no-unknown-property: off
   react/prop-types: off
   react/react-in-jsx-scope: off
+globals:
+  __dirname: readonly
+  process: readonly
+  require: readonly

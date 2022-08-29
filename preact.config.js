@@ -1,10 +1,4 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-/*
-  global
-    __dirname
-    process
-    require
-*/
 const fs = require("fs");
 const path = require("path");
 
@@ -24,17 +18,17 @@ export default (config, env) => {
       // `https` option deprecated in later webpack versions.
       https: {
         key: fs.readFileSync("./webpack/cert/dev.local.key"),
-        cert: fs.readFileSync("./webpack/cert/dev.local.crt")
+        cert: fs.readFileSync("./webpack/cert/dev.local.crt"),
       },
       static: {
         directory: path.join(__dirname, "src/data"),
-        publicPath: "/data"
-      }
+        publicPath: "/data",
+      },
     };
   }
 
   config.resolve.alias = {
     ...config.resolve.alias,
-    "@observablehq/plot": "@observablehq/plot/src"
+    "@observablehq/plot": "@observablehq/plot/src",
   };
 };
