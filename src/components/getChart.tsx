@@ -1,61 +1,81 @@
-function getChart<Datum>(data: Datum[]): ReturnType<typeof plot> {
-  const mark = rectY<Datum>(data, {});
+const formatFixed = format(".2f");
+const formatPercent = format(".1%");
+
+function getChart<Datum, Options>( data: Datum[], options: Options ): SVGSVGElement {
+
+  const reduceMethod: BinReduceMethodWithScope<Datum, MarkProperties["title"], number> = (
+    index,
+    _values,
+    basis = 1,
+    extent?
+  ) => {
+
+    const proportion = index.length / basis;
+
+    // First pass, on data specified by `scope` property.
+    // This value is subsequently passed to each call on bins in the
+    // `basis` param.
+    if (extent == null) {
+      return proportion;
+    }
+    // Subsequent passes on each bin.
+    else {
+      const { x1, x2 }: {
+        x1: number;
+        x2: number;
+      } = extent;
+      return `Vol (log₁₀): ${formatFixed( x1 )}-${formatFixed( x2 )}, Freq: ${formatPercent(proportion)}`;
+    }
+  };
+
+  /**
+   * Value to be used for `title` output channel.
+   */
+  const titleOutput: BinReducerObject<Datum, MarkProperties["title"], number> = {
+    scope: "data",
+    reduce: reduceMethod,
+  };
+
+  /**
+   * All output channels for transform.
+   */
+  const outputs = {
+    y: {
+      scope: "data",
+      label: "Foo label",
+      reduce: (I: number[], V: Datum[], basis?: number) => {
+        return I.length / (basis ?? 1)
+      },
+    },
+    title: titleOutput,
+  };
+
+  const optionsTransformed = binX<Options>(outputs, options);
+
+  const mark: Rect<Datum> = rectY<Datum>(data, optionsTransformed);
 
   const chart = plot({
     x: {
       round: true,
-      label: "Trade volume (log₁₀) →",
     },
     y: {
       grid: true,
-      percent: true,
     },
-    marks: [
-      rectWithCallback(mark, markCbFn),
-      // ruleY([ 0 ], {}),
-    ],
+    marks: [ mark ],
   });
-  // return addTooltips();
-  return chart;
-}
 
-function getTransform() {
-  return binX<Datum>(
-    {
-      y: "proportion",
-      title: {
-        scope: "data",
-        label: "Frequency",
-        reduce: (I, V, basis = 1, { x1, x2 } = {}) => {
-          const proportion = I.length / basis;
-          if (!(x1 == null && x2 == null)) {
-            const msg = `Vol (log₁₀): ${formatFixed(x1)}-${formatFixed(x2)}, Freq: ${formatPercent(proportion)}`;
-            // console.log("[reduce] proportion:", basis, x1, x2 , msg);
-            return msg;
-          }
-          else {
-            // console.log("first pass");
-            return proportion;
-          }
-        },
-      },
-    },
-    {
-      thresholds: "freedman-diaconis",
-      ariaDescription: "Frequency by volume",
-      // x: (d: Datum) => Math.log10(d.Volume),
-    } as RectOptions<Datum>
-  ),
-    ;
+  return chart;
 }
 
 export default getChart;
 
-import { RectOptions } from "@observablehq/plot";
 import {
   plot,
-  binX
+  binX,
+  MarkProperties,
+  rectY,
+  Rect,
+  BinReducerObject,
+  BinReduceMethodWithScope,
 } from "@observablehq/plot";
-import { rectY } from "@observablehq/plot";
-import rectWithCallback from "./rectWithCallback";
-import { markCbFn, Datum, formatFixed } from "./Chart";
+import { format } from "d3-format";
