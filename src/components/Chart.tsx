@@ -8,7 +8,7 @@ export type Datum = {
   Volume: number;
 }
 
-const markOptions: BinOptions<RectOptions<Datum>> = {
+const markOptions: MarkOptions = {
   thresholds: "freedman-diaconis",
   ariaDescription: "Frequency by volume",
   x: (d: Datum) => Math.log10(d.Volume),
@@ -24,7 +24,7 @@ function Chart() {
     ).then((data) => {
 
       setChart(
-        addTooltips(getChart<Datum, RectOptions<Datum>>(data as Datum[], markOptions))
+        addTooltips(getChart<Datum, MarkOptions>(data as Datum[], markOptions))
       );
     });
   }, []);
@@ -65,14 +65,10 @@ export default Chart;
 import { useEffect, useState } from "preact/hooks";
 import { autoType } from "d3-dsv";
 import { csv } from "d3-fetch";
-import {
-} from "@observablehq/plot";
-import {
-  type RectOptions,
-} from "@observablehq/plot";
-import {
-  BinOptions,
-} from "@observablehq/plot";
 import { MDCTooltip } from "@material/tooltip";
 import Throbber from "./Throbber";
-import getChart from "./getChart";import addTooltips from "./addTooltips";
+import
+  getChart, {
+    type MarkOptions,
+  } from "./getChart";
+import addTooltips from "./addTooltips";

@@ -1,12 +1,14 @@
 const formatFixed = format(".2f");
 const formatPercent = format(".1%");
 
+export type MarkOptions = Record<string, unknown>;
+
 type Extent = {
   x1: number,
   x2: number,
 };
 
-function getChart<Datum, Options>( data: Datum[], markOptions: Options ): SVGSVGElement {
+function getChart<Datum, Options = MarkOptions>( data: Datum[], markOptions: Options ): SVGSVGElement {
 
   const reduceMethod = (
     index: number[],
@@ -52,7 +54,7 @@ function getChart<Datum, Options>( data: Datum[], markOptions: Options ): SVGSVG
     title: titleOutput,
   };
 
-  const optionsTransformed = binX(outputs, markOptions);
+  const optionsTransformed: MarkOptions = binX(outputs, markOptions);
 
   const mark: typeof Rect = rectY(data, optionsTransformed);
 
