@@ -1,13 +1,18 @@
 const formatFixed = format(".2f");
 const formatPercent = format(".1%");
 
+type Extent = {
+  x1: number,
+  x2: number,
+};
+
 function getChart<Datum, Options>( data: Datum[], markOptions: Options ): SVGSVGElement {
 
-  const reduceMethod: BinReduceMethodWithScope<Datum, MarkProperties["title"], number> = (
-    index,
-    _values,
+  const reduceMethod = (
+    index: number[],
+    _values: typeof data,
     basis = 1,
-    extent?
+    extent?: Extent
   ) => {
 
     const proportion = index.length / basis;
@@ -20,10 +25,7 @@ function getChart<Datum, Options>( data: Datum[], markOptions: Options ): SVGSVG
     }
     // Subsequent passes on each bin.
     else {
-      const { x1, x2 }: {
-        x1: number;
-        x2: number;
-      } = extent;
+      const { x1, x2 }: Extent = extent;
       return `Vol (log₁₀): ${formatFixed( x1 )}-${formatFixed( x2 )}, Freq: ${formatPercent(proportion)}`;
     }
   };
@@ -31,7 +33,7 @@ function getChart<Datum, Options>( data: Datum[], markOptions: Options ): SVGSVG
   /**
    * Value to be used for `title` output channel.
    */
-  const titleOutput: BinReducerObject<Datum, MarkProperties["title"], number> = {
+  const titleOutput = {
     scope: "data",
     reduce: reduceMethod,
   };
@@ -50,9 +52,9 @@ function getChart<Datum, Options>( data: Datum[], markOptions: Options ): SVGSVG
     title: titleOutput,
   };
 
-  const optionsTransformed = binX<Options>(outputs, markOptions);
+  const optionsTransformed = binX(outputs, markOptions);
 
-  const mark: Rect<Datum> = rectY<Datum>(data, optionsTransformed);
+  const mark: typeof Rect = rectY(data, optionsTransformed);
 
   const chart = plot({
     class: "plot",
@@ -76,10 +78,7 @@ export default getChart;
 import {
   plot,
   binX,
-  MarkProperties,
   rectY,
   Rect,
-  BinReducerObject,
-  BinReduceMethodWithScope,
 } from "@observablehq/plot";
 import { format } from "d3-format";

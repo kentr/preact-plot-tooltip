@@ -26,9 +26,4 @@ export default (config, env) => {
       },
     };
   }
-
-  config.resolve.alias = {
-    ...config.resolve.alias,
-    "@observablehq/plot": "@observablehq/plot/src",
-  };
 };

@@ -8,6 +8,4 @@ declare module '*.css' {
   export default content;
 }
 
-// declare module '@observablehq/plot';
-
-
+declare module '@observablehq/plot';

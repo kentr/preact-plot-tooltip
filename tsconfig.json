@@ -9,20 +9,9 @@
     "outDir": "dist",
     "noEmitOnError": true,
     "strictNullChecks": true,
-    "baseUrl": ".",
-    "paths": {
-      "@observablehq/plot": [
-        "node_modules/@observablehq/plot/src"
-      ],
-      "@observablehq/plot/options": [
-        "node_modules/@observablehq/plot/src/options"
-      ],
-      "@observablehq/plot/transforms": [
-        "node_modules/@observablehq/plot/src/transforms"
-      ],
-    }
+    "baseUrl": "."
   },
   "include": [
     "src"
-, "tmp/ChartSimple.tsx"  ]
+  ]
 }
