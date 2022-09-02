@@ -1,3 +1,10 @@
+const {
+  plot,
+  binX,
+  rectY,
+  Rect,
+} = Plot;
+
 const formatFixed = format(".2f");
 const formatPercent = format(".1%");
 
@@ -77,10 +84,5 @@ function getChart<Datum, Options = MarkOptions>( data: Datum[], markOptions: Opt
 
 export default getChart;
 
-import {
-  plot,
-  binX,
-  rectY,
-  Rect,
-} from "@observablehq/plot";
+import * as Plot from "@observablehq/plot";
 import { format } from "d3-format";

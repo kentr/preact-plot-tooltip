@@ -1,16 +1,13 @@
-import { FunctionalComponent, h } from 'preact';
-import { Route, Router } from 'preact-router';
+import { FunctionalComponent } from 'preact';
 
-import Home from '../routes/home';
 import Header from './header';
+import Chart from "./Chart";
 
 const App: FunctionalComponent = () => {
     return (
         <div id="preact_root">
             <Header />
-            <Router>
-                <Route path="/" component={Home} />
-            </Router>
+            <Chart />
         </div>
     );
 };

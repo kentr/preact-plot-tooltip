@@ -1,5 +1,5 @@
 import { FunctionalComponent } from "preact";
-import Chart from "../../components/Chart";
+import Chart from "../Chart";
 import style from "./style.scss";
 
 const Home: FunctionalComponent = () => {
