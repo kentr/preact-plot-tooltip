@@ -4,12 +4,13 @@
   "version": "0.0.0",
   "license": "UNLICENSED",
   "scripts": {
-    "build": "preact build",
+    "build": "preact build --no-sw --no-prerender",
     "serve": "sirv build --port 8080 --cors --single",
     "dev": "preact watch",
     "start": "npm run dev",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-    "test": "jest ./tests"
+    "test": "jest ./tests",
+    "analyze": "npm run build -- --analyze"
   },
   "dependencies": {
     "@material/tooltip": "^14.0.0",

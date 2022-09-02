@@ -34,17 +34,9 @@ export default (config, env) => {
       maxInitialRequests: Infinity,
       minSize: 0,
       cacheGroups: {
-        d3A: {
-          test: /[\\/]node_modules[\\/]d3[\\/]/,
-          name: "d3A",
-          // Though the docs recommend setting `name` to `false`, that
-          // breaks the site. Using a string doesn't appear to be
-          // causing frequently-changing bundles, though.
-          chunks: "all",
-        },
-        d3B: {
-          test: /[\\/]node_modules[\\/]d3-.*?[\\/]/,
-          name: "d3B",
+        d3: {
+          test: /[\\/]node_modules[\\/](d3|d3-.*?)[\\/]/,
+          name: "d3",
           // Though the docs recommend setting `name` to `false`, that
           // breaks the site. Using a string doesn't appear to be
           // causing frequently-changing bundles, though.
