@@ -6,7 +6,7 @@ const {
 } = Plot;
 
 const formatFixed = format(".2f");
-const formatPercent = format(".1%");
+const formatPercent: (v: number) => string = format(".1%");
 
 export type MarkOptions = Record<string, unknown>;
 
@@ -15,37 +15,7 @@ type Extent = {
   x2: number,
 };
 
-function getChart<Datum, Options = MarkOptions>( data: Datum[], markOptions: Options ): SVGSVGElement {
-
-  const reduceMethod = (
-    index: number[],
-    _values: typeof data,
-    basis = 1,
-    extent?: Extent
-  ) => {
-
-    const proportion = index.length / basis;
-
-    // First pass, on data specified by `scope` property.
-    // This value is subsequently passed to each call on bins in the
-    // `basis` param.
-    if (extent == null) {
-      return proportion;
-    }
-    // Subsequent passes on each bin.
-    else {
-      const { x1, x2 }: Extent = extent;
-      return `Vol (log₁₀): ${formatFixed( x1 )}-${formatFixed( x2 )}, Freq: ${formatPercent(proportion)}`;
-    }
-  };
-
-  /**
-   * Value to be used for `title` output channel.
-   */
-  const titleOutput = {
-    scope: "data",
-    reduce: reduceMethod,
-  };
+function getChart<Datum, Data = Datum[], Options = MarkOptions>( data: Data, markOptions: Options ): SVGSVGElement {
 
   /**
    * All output channels for transform.
@@ -54,11 +24,12 @@ function getChart<Datum, Options = MarkOptions>( data: Datum[], markOptions: Opt
     y: {
       scope: "data",
       label: "Frequency",
-      reduce: (I: number[], V: Datum[], basis?: number) => {
-        return I.length / (basis ?? 1)
-      },
+      reduce: binYReducer,
     },
-    title: titleOutput,
+    title: {
+      scope: "data",
+      reduce: binTitleReducer,
+    },
   };
 
   const optionsTransformed: MarkOptions = binX(outputs, markOptions);
@@ -80,6 +51,32 @@ function getChart<Datum, Options = MarkOptions>( data: Datum[], markOptions: Opt
   });
 
   return chart;
+}
+
+function binTitleReducer<Data>(
+  index: number[],
+  _values: Data,
+  basis = 1,
+  extent?: Extent
+): number | string {
+
+  const proportion = binYReducer<Data>(index, _values, basis);
+
+  // First pass, on data specified by `scope` property.
+  // This value is subsequently passed to each call on bins in the
+  // `basis` param.
+  if (extent == null) {
+    return proportion;
+  }
+  // Subsequent passes on each bin.
+  else {
+    const { x1, x2 }: Extent = extent;
+    return `Vol (log₁₀): ${formatFixed( x1 )}-${formatFixed( x2 )}, Freq: ${formatPercent(proportion)}`;
+  }
+}
+
+function binYReducer<Data>(index: number[], _values: Data, basis = 1) {
+  return index.length / (basis ?? 1)
 }
 
 export default getChart;

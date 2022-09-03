@@ -18,14 +18,17 @@ function Chart() {
   const [ chart, setChart ] = useState<SVGSVGElement | undefined>();
 
   useEffect(() => {
-    csv(
+    csv<Datum>(
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vS-fpjzlVu3W7PUBJCw7noxW0c5-JLtpDdIQvew-OvybeSyptiFbgPx58fppK5OJfRDkjUjbkkboTqx/pub?output=csv",
       autoType
     ).then((data) => {
 
-      setChart(
-        addTooltips(getChart<Datum, MarkOptions>(data as Datum[], markOptions))
-      );
+      const chart = getChart<Datum, Datum[], MarkOptions>(data, markOptions);
+      if (chart) {
+        setChart(
+          addTooltips(chart)
+        );
+      }
     });
   }, []);
 
