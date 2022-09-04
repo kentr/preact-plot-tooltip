@@ -71,7 +71,8 @@ function binTitleReducer<Data>(
   // Subsequent passes on each bin.
   else {
     const { x1, x2 }: Extent = extent;
-    return `Vol (log₁₀): ${formatFixed( x1 )}-${formatFixed( x2 )}, Freq: ${formatPercent(proportion)}`;
+    return `Vol (log₁₀): ${formatFixed( x1 )}-${formatFixed( x2 )}
+    Freq: ${formatPercent(proportion)}`;
   }
 }
 

@@ -42,7 +42,7 @@ function addTooltips(svg: SVGSVGElement): SVGSVGElement {
                 .html(
                   `<div class="mdc-tooltip__surface mdc-tooltip__surface-animation tooltip__surface">
                     <div class="mdc-tooltip__content tooltip__content">
-                      ${title.innerHTML}
+                      ${title.innerHTML.replace(/\n/, "<br />")}
                     </div>
                   </div>`
                 )

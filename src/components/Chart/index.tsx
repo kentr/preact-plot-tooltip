@@ -1,3 +1,11 @@
+/**
+ * @file Component to display a histogram.
+ * @alias Chart.tsx
+ *
+ * @copyright Kent Richards. All rights reserved. All use or
+ *  redistribution is prohibited without explicit permission.
+ */
+
 export type Datum = {
   Date: Date;
   Open: number;
@@ -11,9 +19,12 @@ export type Datum = {
 const markOptions: MarkOptions = {
   thresholds: "freedman-diaconis",
   ariaDescription: "Frequency by volume",
-  x: (d: Datum) => Math.log10(d.Volume),
+  x: (d: Datum): number => Math.log10(d.Volume),
 };
 
+/**
+ * Displays a histogram.
+ */
 function Chart() {
   const [ chart, setChart ] = useState<SVGSVGElement | undefined>();
 
@@ -69,9 +80,9 @@ import { useEffect, useState } from "preact/hooks";
 import { autoType } from "d3-dsv";
 import { csv } from "d3-fetch";
 import { MDCTooltip } from "@material/tooltip";
-import Throbber from "./Throbber";
+import Throbber from "../Throbber";
 import
   getChart, {
     type MarkOptions,
-  } from "./getChart";
-import addTooltips from "./addTooltips";
+  } from "../getChart";
+import addTooltips from "../addTooltips";
