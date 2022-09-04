@@ -36,9 +36,7 @@ function Chart() {
 
       const chart = getChart<Datum, Datum[], MarkOptions>(data, markOptions);
       if (chart) {
-        setChart(
-          addTooltips(chart)
-        );
+        setChart(chart);
       }
     });
   }, []);

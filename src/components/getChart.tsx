@@ -1,6 +1,7 @@
 const {
   plot,
   binX,
+  map,
   rectY,
   Rect,
 } = Plot;
@@ -10,9 +11,12 @@ const formatPercent: (v: number) => string = format(".1%");
 
 export type MarkOptions = Record<string, unknown>;
 
-type Extent = {
-  x1: number,
-  x2: number,
+type X = number;
+type Y = number;
+
+type BinExtentX<T = number> = {
+  x1: T,
+  x2: T,
 };
 
 function getChart<Datum, Data = Datum[], Options = MarkOptions>( data: Data, markOptions: Options ): SVGSVGElement {
@@ -32,9 +36,42 @@ function getChart<Datum, Data = Datum[], Options = MarkOptions>( data: Data, mar
     },
   };
 
-  const optionsTransformed: MarkOptions = binX(outputs, markOptions);
+  const optionsBinned: MarkOptions = binX(outputs, markOptions);
 
-  const mark: typeof Rect = rectY(data, optionsTransformed);
+  /**
+   * Mark that displays visual bars.
+   */
+  const markData: typeof Rect = rectY(data,
+    // Remove `ariaDescription` from mark options.
+    // It will be kept on the mouse events overlay so that
+    // tooltips will be added to _that_ mark instead.
+    (
+      ({
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        ariaDescription,
+        ...keep
+      }) => keep
+    )(optionsBinned)
+  );
+
+  /**
+   * Transparent bar overlay for mouse events.
+   */
+  const markHover: typeof Rect = rectY(data, {
+    ...map(
+      {
+        y: {
+          map: (index: number[], binnedVals: Y[], mappedVals: Y[]): void => {
+            binnedVals.forEach((_, i) => {
+                mappedVals[i] = mappedVals[0] ?? Math.max(...binnedVals);
+            });
+          },
+        },
+      },
+      optionsBinned
+    ),
+    fill: "transparent",
+  });
 
   const chart = plot({
     class: "plot",
@@ -47,17 +84,20 @@ function getChart<Datum, Data = Datum[], Options = MarkOptions>( data: Data, mar
     y: {
       grid: true,
     },
-    marks: [ mark ],
+    marks: [
+      markData,
+      markHover,
+    ],
   });
 
-  return chart;
+  return addTooltips(chart);
 }
 
 function binTitleReducer<Data>(
   index: number[],
   _values: Data,
   basis = 1,
-  extent?: Extent
+  extent?: BinExtentX<X>
 ): number | string {
 
   const proportion = binYReducer<Data>(index, _values, basis);
@@ -70,7 +110,7 @@ function binTitleReducer<Data>(
   }
   // Subsequent passes on each bin.
   else {
-    const { x1, x2 }: Extent = extent;
+    const { x1, x2 }: BinExtentX<X> = extent;
     return `Vol (log₁₀): ${formatFixed( x1 )}-${formatFixed( x2 )}
     Freq: ${formatPercent(proportion)}`;
   }
@@ -83,4 +123,5 @@ function binYReducer<Data>(index: number[], _values: Data, basis = 1) {
 export default getChart;
 
 import * as Plot from "@observablehq/plot";
+import addTooltips from "./addTooltips";
 import { format } from "d3-format";
