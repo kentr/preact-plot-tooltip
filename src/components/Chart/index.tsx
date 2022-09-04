@@ -83,4 +83,3 @@ import
   getChart, {
     type MarkOptions,
   } from "../getChart";
-import addTooltips from "../addTooltips";
