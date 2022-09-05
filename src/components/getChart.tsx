@@ -9,20 +9,6 @@ const {
 const formatFixed = format(".2f");
 const formatPercent: (v: number) => string = format(".1%");
 
-export type MarkOptions<Datum> = {
-  ariaDescription: string,
-  thresholds: string | number,
-  x: (d: Datum) => number,
-};
-
-type X = number;
-type Y = number;
-
-type BinExtentX<T = number> = {
-  x1: T,
-  x2: T,
-};
-
 function getChart<Datum, Data = Datum[]>( data: Data, markOptions: MarkOptions<Datum> ): SVGSVGElement {
 
   /**
@@ -94,7 +80,8 @@ function getChart<Datum, Data = Datum[]>( data: Data, markOptions: MarkOptions<D
     ],
   });
 
-  return addTooltips(chart, markOptions.ariaDescription);
+  const selector = `> g[aria-description="${markOptions.ariaDescription}"]`;
+  return addTooltips(chart, selector);
 }
 
 /**
@@ -142,8 +129,22 @@ function binYReducer<Data>(index: number[], _values: Data, basis = 1) {
   return index.length / (basis ?? 1)
 }
 
-export default getChart;
-
 import * as Plot from "@observablehq/plot";
 import addTooltips from "./addTooltips";
 import { format } from "d3-format";
+
+export type MarkOptions<Datum> = {
+  ariaDescription: string,
+  thresholds: string | number,
+  x: (d: Datum) => number,
+};
+
+type X = number;
+type Y = number;
+
+type BinExtentX<T = number> = {
+  x1: T,
+  x2: T,
+};
+
+export default getChart;

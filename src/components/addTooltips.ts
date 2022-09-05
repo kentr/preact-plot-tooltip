@@ -12,10 +12,10 @@
  * @modifies svg
  * @returns The modified (mutated) SVG element.
  */
-function addTooltips(svg: SVGSVGElement, groupSelector = 'g[aria-description="Frequency by volume"]'): SVGSVGElement {
+function addTooltips(svg: SVGSVGElement, groupSelector: string): SVGSVGElement {
 
   const group: SVGGElement | null = svg.querySelector(
-    `:scope > ${groupSelector}`
+    `:scope ${groupSelector}`
   );
 
   if (group) {

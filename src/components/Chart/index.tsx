@@ -27,6 +27,7 @@ const markOptions: MarkOptions<Datum> = {
  */
 function Chart() {
   const [ chart, setChart ] = useState<SVGSVGElement | undefined>();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     csv<Datum>(
@@ -54,6 +55,17 @@ function Chart() {
     }
   }, [ chart ]);
 
+  useEffect(() => {
+    if (chart instanceof SVGSVGElement && containerRef.current) {
+      addClickHandlers({
+        markNodes: containerRef.current
+          .querySelectorAll<SVGRectElement>(`:scope > svg > g[aria-description="${markOptions.ariaDescription}"] > rect`),
+
+        onClick: handleMarkClick,
+      });
+    }
+  }, [ chart ]);
+
   return (
     <div
       style={{
@@ -67,15 +79,36 @@ function Chart() {
       {!chart && <Throbber />}
       {chart &&
         // Output from Plot is assumed to be safe.
-        <div dangerouslySetInnerHTML={{ __html: chart.outerHTML }} />
+        <div
+          ref={containerRef}
+          dangerouslySetInnerHTML={{ __html: chart.outerHTML }}
+        />
       }
     </div>
   );
 }
 
+/**
+ * "Click" handler for individual histogram mark (bar).
+ *
+ * Only for demo. Doesn't do anything substantial.
+ *
+ * @param ev UI event
+ */
+function handleMarkClick(this: SVGRectElement, ev: MouseEvent | TouchEvent) {
+
+  if (ev.type === "touchstart") {
+    ev.preventDefault();
+  }
+
+  const id = this.id.split("-")[1];
+
+  console.log(`Bar ${id} clicked`);
+}
+
 export default Chart;
 
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import { autoType } from "d3-dsv";
 import { csv } from "d3-fetch";
 import { MDCTooltip } from "@material/tooltip";
@@ -83,4 +116,4 @@ import Throbber from "../Throbber";
 import
   getChart, {
     type MarkOptions,
-  } from "../getChart";
+  } from "../getChart";import addClickHandlers from "./addClickHandlers";
