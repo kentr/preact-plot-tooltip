@@ -34,38 +34,21 @@ html, body {
 // with SVG charts have failed.
 // This code is modeled after the current version of @material/tooltip.
 $query: feature-targeting.all();
-$feat-structure: feature-targeting.create-target($query, structure);
 
-.chart-tooltip {
-
-	@include tooltip-theme.rich-text-ink-color(
-		tooltip-theme.$rich-title-text-color,
-		tooltip-theme.$rich-content-text-color,
-		tooltip-theme.$rich-content-link-color,
-		$query: $query
-	);
+.bar-tooltip {
 
 	.tooltip__content {
-
-		max-width: calc(#{$_rich_max-width} - (2 * #{$_content-margin}));
 		align-self: stretch;
 		margin: 0;
 		font-size: var(--mdc-typography-caption-font-size, 0.75rem);
-
 	}
-}
 
-.tooltip__surface {
-	@include elevation-mixins.overlay-dimensions(100%, $query: $query);
-	@include elevation-mixins.elevation(2, $query: $query);
-	align-items: flex-start;
-	border-radius: $_rich_corner_radius;
-	display: flex;
-	flex-direction: column;
-	line-height: $_rich_line-height;
-	min-height: $_min-height;
-	min-width: $_min-width;
-	max-width: $_rich_max-width;
-	position: relative;
-	background-color: tooltip-theme.$rich-background-color;
+  .tooltip__surface {
+    @include elevation-mixins.elevation(2, $query: $query);
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: tooltip-theme.$rich-background-color;
+  }
 }
