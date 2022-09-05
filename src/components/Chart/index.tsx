@@ -116,4 +116,6 @@ import Throbber from "../Throbber";
 import
   getChart, {
     type MarkOptions,
-  } from "../getChart";import addClickHandlers from "./addClickHandlers";
+  } from "../getChart";
+import addClickHandlers from "./addClickHandlers";
+import "./style.scss";
