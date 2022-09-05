@@ -93,14 +93,23 @@ function getChart<Datum, Data = Datum[], Options = MarkOptions>( data: Data, mar
   return addTooltips(chart);
 }
 
+/**
+ * Reducer for `title` values on bins.
+ *
+ * @param index Array of integers, with each element being an index
+ *  value into the data array.
+ * @param values Array of data values.
+ * @param basis
+ * @param extent
+ */
 function binTitleReducer<Data>(
   index: number[],
-  _values: Data,
+  values: Data,
   basis = 1,
   extent?: BinExtentX<X>
 ): number | string {
 
-  const proportion = binYReducer<Data>(index, _values, basis);
+  const proportion = binYReducer<Data>(index, values, basis);
 
   // First pass, on data specified by `scope` property.
   // This value is subsequently passed to each call on bins in the
@@ -116,6 +125,15 @@ function binTitleReducer<Data>(
   }
 }
 
+/**
+ * Reducer for `title` values on bins.
+ *
+ * @param index Array of integers, with each element being an index
+ *  value into the data array.
+ * @param _values Array of data values.
+ * @param basis
+ * @returns
+ */
 function binYReducer<Data>(index: number[], _values: Data, basis = 1) {
   return index.length / (basis ?? 1)
 }
