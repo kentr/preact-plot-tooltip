@@ -12,26 +12,33 @@
  * @modifies svg
  * @returns The modified (mutated) SVG element.
  */
-function addTooltips(svg: SVGSVGElement): SVGSVGElement {
+function addTooltips(svg: SVGSVGElement, groupSelector = 'g[aria-description="Frequency by volume"]'): SVGSVGElement {
 
   const group: SVGGElement | null = svg.querySelector(
-    ':scope > g[aria-description="Frequency by volume"]'
+    `:scope > ${groupSelector}`
   );
 
   if (group) {
     const body = select("body");
 
     select(group)
-      .attr("id", "bars-freq")
+      .attr("id", "mouse-events")
       .classed("bars", true)
       .selectChildren(function (mark: SVGElement, i) {
         const title = mark.querySelector("title");
 
         if (title) {
-          const markId = `bar-${i}`;
+          const _mark = select(mark);
+          // let markId;
+          // if (mark.attr("id")) {
+
+          // }
+          // `id` is required for tooltips.
+          const markId = _mark.attr("id") ?? `bar-${i}`;
           const tooltipId = `tooltip-${markId}`;
 
-          select(mark)
+          _mark
+            // Ensure mark `id` attribute is sent.
             .attr("id", markId)
             .attr("aria-describedby", tooltipId);
 

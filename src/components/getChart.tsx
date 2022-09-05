@@ -9,7 +9,11 @@ const {
 const formatFixed = format(".2f");
 const formatPercent: (v: number) => string = format(".1%");
 
-export type MarkOptions = Record<string, unknown>;
+export type MarkOptions<Datum> = {
+  ariaDescription: string,
+  thresholds: string | number,
+  x: (d: Datum) => number,
+};
 
 type X = number;
 type Y = number;
@@ -19,7 +23,7 @@ type BinExtentX<T = number> = {
   x2: T,
 };
 
-function getChart<Datum, Data = Datum[], Options = MarkOptions>( data: Data, markOptions: Options ): SVGSVGElement {
+function getChart<Datum, Data = Datum[]>( data: Data, markOptions: MarkOptions<Datum> ): SVGSVGElement {
 
   /**
    * All output channels for transform.
@@ -36,7 +40,7 @@ function getChart<Datum, Data = Datum[], Options = MarkOptions>( data: Data, mar
     },
   };
 
-  const optionsBinned: MarkOptions = binX(outputs, markOptions);
+  const optionsBinned: MarkOptions<Datum> = binX(outputs, markOptions);
 
   /**
    * Mark that displays visual bars.
@@ -90,7 +94,7 @@ function getChart<Datum, Data = Datum[], Options = MarkOptions>( data: Data, mar
     ],
   });
 
-  return addTooltips(chart);
+  return addTooltips(chart, markOptions.ariaDescription);
 }
 
 /**

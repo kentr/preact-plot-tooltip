@@ -16,7 +16,7 @@ export type Datum = {
   Volume: number;
 }
 
-const markOptions: MarkOptions = {
+const markOptions: MarkOptions<Datum> = {
   thresholds: "freedman-diaconis",
   ariaDescription: "Frequency by volume",
   x: (d: Datum): number => Math.log10(d.Volume),
@@ -34,7 +34,7 @@ function Chart() {
       autoType
     ).then((data) => {
 
-      const chart = getChart<Datum, Datum[], MarkOptions>(data, markOptions);
+      const chart = getChart<Datum, Datum[]>(data, markOptions);
       if (chart) {
         setChart(chart);
       }
@@ -43,13 +43,14 @@ function Chart() {
 
   useEffect(() => {
     if (chart instanceof SVGSVGElement) {
-      document.querySelectorAll(".bar-tooltip").forEach((el) => {
-        const tooltip = new MDCTooltip(el);
-        tooltip.setShowDelay(80);
-        tooltip.setHideDelay(40);
-        // Add space between target & tooltip;
-        tooltip.setAnchorBoundaryType(1);
-      });
+      document.querySelectorAll(".bar-tooltip")
+        .forEach((el) => {
+          const tooltip = new MDCTooltip(el);
+          tooltip.setShowDelay(80);
+          tooltip.setHideDelay(40);
+          // Add space between target & tooltip;
+          tooltip.setAnchorBoundaryType(1);
+        });
     }
   }, [ chart ]);
 
