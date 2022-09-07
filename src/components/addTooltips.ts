@@ -18,6 +18,7 @@ function addTooltips({
 }): void {
 
   if (markGroup) {
+    // @todo Refactor to vanilla JS?
     const body = select("body");
 
     select(markGroup)
