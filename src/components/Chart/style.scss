@@ -53,10 +53,14 @@
   //   background-color: tooltip-theme.$rich-background-color;
   // }
 
-  svg[class*="plot-"] {
-    rect:focus {
-      border: none;
-      outline: none;
+  #pointer-events {
+    rect {
+      cursor: pointer;
+      
+      &:focus {
+        border: none;
+        outline: none;
+      }
     }
   }
 }
