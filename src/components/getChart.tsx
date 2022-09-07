@@ -129,7 +129,6 @@ function binYReducer<Data>(index: number[], _values: Data, basis = 1) {
 }
 
 import * as Plot from "@observablehq/plot";
-import addTooltips from "./addTooltips";
 import { format } from "d3-format";
 
 export type MarkOptions<Datum> = {
