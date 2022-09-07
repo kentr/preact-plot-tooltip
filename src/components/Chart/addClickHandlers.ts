@@ -14,7 +14,7 @@ function addClickHandlers({
 }): void {
 
   markNodes
-    .forEach((el, key) => {
+    .forEach((el) => {
       el.addEventListener("mousedown", onClick);
       el.addEventListener("touchstart", onClick);
     });
