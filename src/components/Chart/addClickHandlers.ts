@@ -13,6 +13,8 @@ function addClickHandlers({
   onClick: (ev: MouseEvent | TouchEvent, key?: number) => void,
 }): void {
 
+  // @todo Use `button` role with additional event handlers.
+  // @see https://www.w3.org/WAI/ARIA/apg/example-index/button/button.html
   markNodes
     .forEach((el) => {
       el.addEventListener("mousedown", onClick);
