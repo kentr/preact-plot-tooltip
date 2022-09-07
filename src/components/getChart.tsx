@@ -80,8 +80,7 @@ function getChart<Datum, Data = Datum[]>( data: Data, markOptions: MarkOptions<D
     ],
   });
 
-  const selector = `> g[aria-description="${markOptions.ariaDescription}"]`;
-  return addTooltips(chart, selector);
+  return chart;
 }
 
 /**

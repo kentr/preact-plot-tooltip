@@ -43,7 +43,13 @@ function Chart() {
   }, []);
 
   useEffect(() => {
-    if (chart instanceof SVGSVGElement) {
+    if (chart instanceof SVGSVGElement && containerRef.current) {
+
+      const selector = `:scope > svg > g[aria-description="${markOptions.ariaDescription}"]`;
+
+      const markGroup: SVGGElement | null = containerRef.current.querySelector(selector);
+      addTooltips({ markGroup });
+
       document.querySelectorAll(".bar-tooltip")
         .forEach((el) => {
           const tooltip = new MDCTooltip(el);
@@ -118,4 +124,5 @@ import
     type MarkOptions,
   } from "../getChart";
 import addClickHandlers from "./addClickHandlers";
+import addTooltips from "../addTooltips";
 import "./style.scss";

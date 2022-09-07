@@ -8,43 +8,37 @@
 /**
  * Adds Material tooltips to chart.
  *
- * @param svg The element to be modified.
- * @modifies svg
- * @returns The modified (mutated) SVG element.
+ * @param markGroup The element to be modified.
+ * @modifies markGroup
  */
-function addTooltips(svg: SVGSVGElement, groupSelector: string): SVGSVGElement {
+function addTooltips({
+  markGroup,
+}: {
+  markGroup: SVGGElement | null,
+}): void {
 
-  const group: SVGGElement | null = svg.querySelector(
-    `:scope ${groupSelector}`
-  );
-
-  if (group) {
+  if (markGroup) {
     const body = select("body");
 
-    select(group)
-      .attr("id", "mouse-events")
+    select(markGroup)
+      .attr("id", "pointer-events")
       .classed("bars", true)
-      .selectChildren(function (mark: SVGElement, i) {
-        const title = mark.querySelector("title");
+      .selectChildren((el: SVGElement, i) => {
+        const title = el.querySelector("title");
 
         if (title) {
-          const _mark = select(mark);
-          // let markId;
-          // if (mark.attr("id")) {
-
-          // }
+          const mark = select(el);
           // `id` is required for tooltips.
-          const markId = _mark.attr("id") ?? `bar-${i}`;
+          const markId = mark.attr("id") ?? `bar-${i}`;
           const tooltipId = `tooltip-${markId}`;
 
-          _mark
+          mark
             // Ensure mark `id` attribute is sent.
             .attr("id", markId)
             .attr("aria-describedby", tooltipId);
 
           body
-          .append(
-            () =>
+            .append(() =>
               create("div")
                 .html(
                   `<div class="mdc-tooltip__surface mdc-tooltip__surface-animation tooltip__surface">
@@ -54,11 +48,11 @@ function addTooltips(svg: SVGSVGElement, groupSelector: string): SVGSVGElement {
                   </div>`
                 )
                 .node()
-          )
+            )
             .attr("id", tooltipId)
             .classed("mdc-tooltip bar-tooltip", true)
             .attr("role", "tooltip")
-            .attr("aria-hidden", true)
+            .attr("aria-hidden", true);
 
           title.remove();
         }
@@ -67,8 +61,6 @@ function addTooltips(svg: SVGSVGElement, groupSelector: string): SVGSVGElement {
         return true;
       });
   }
-
-  return svg;
 }
 
 export default addTooltips;
