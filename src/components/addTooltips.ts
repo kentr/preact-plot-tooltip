@@ -5,6 +5,8 @@
  *  redistribution is prohibited without explicit permission.
  */
 
+const tooltipClass = "bar-tooltip";
+
 /**
  * Adds Material tooltips to chart.
  *
@@ -51,7 +53,7 @@ function addTooltips({
                 .node()
             )
             .attr("id", tooltipId)
-            .classed("mdc-tooltip bar-tooltip", true)
+            .classed(`mdc-tooltip ${tooltipClass}`, true)
             .attr("role", "tooltip")
             .attr("aria-hidden", true);
 
@@ -61,9 +63,19 @@ function addTooltips({
         // Return value is unused, but satisfies TypeScript.
         return true;
       });
+
+      document.querySelectorAll(`.${tooltipClass}`)
+        .forEach((el) => {
+          const tooltip = new MDCTooltip(el);
+          tooltip.setShowDelay(80);
+          tooltip.setHideDelay(40);
+          // Add space between target & tooltip;
+          tooltip.setAnchorBoundaryType(1);
+        });
   }
 }
 
-export default addTooltips;
-
 import { create, select } from "d3-selection";
+import { MDCTooltip } from "@material/tooltip";
+
+export default addTooltips;

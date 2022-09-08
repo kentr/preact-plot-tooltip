@@ -1,18 +1,9 @@
 function enhanceMarks(chartEl: SVGSVGElement | null) {
   if (chartEl) {
     const selector = `:scope > g[aria-description="${markOptions.ariaDescription}"]`;
-
     const markGroup: SVGGElement | null = chartEl.querySelector(selector);
-    addTooltips({ markGroup });
 
-    document.querySelectorAll(".bar-tooltip")
-      .forEach((el) => {
-        const tooltip = new MDCTooltip(el);
-        tooltip.setShowDelay(80);
-        tooltip.setHideDelay(40);
-        // Add space between target & tooltip;
-        tooltip.setAnchorBoundaryType(1);
-      });
+    addTooltips({ markGroup });
 
     addClickHandlers({
       markNodes: chartEl.querySelectorAll<SVGRectElement>(`${selector} > rect`),
@@ -39,7 +30,6 @@ function enhanceMarks(chartEl: SVGSVGElement | null) {
   console.log(`Bar ${id} clicked`);
 }
 
-import { MDCTooltip } from "@material/tooltip";
 import addClickHandlers from "./addClickHandlers";
 import addTooltips from "../addTooltips";
 import { markOptions } from "./index";
