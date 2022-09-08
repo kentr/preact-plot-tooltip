@@ -1,10 +1,4 @@
-@use "@material/tooltip/styles";
-@use '@material/elevation/mixins' as elevation-mixins;
-@use '@material/dom/dom';
-@use '@material/feature-targeting/feature-targeting';
-@use '@material/typography/typography';
-@use "@material/tooltip/tooltip-theme";
-@import '@material/tooltip/tooltip';
+@use "@material/typography/mdc-typography";
 
 $color: #444;
 
@@ -27,28 +21,4 @@ html, body {
 
 #preact_root {
 	height: 100%;
-}
-
-// Apply rich styles to standard tooltip.
-// This is done because efforts to get rich tooltips working
-// with SVG charts have failed.
-// This code is modeled after the current version of @material/tooltip.
-$query: feature-targeting.all();
-
-.bar-tooltip {
-
-	.tooltip__content {
-		align-self: stretch;
-		margin: 0;
-		font-size: var(--mdc-typography-caption-font-size, 0.75rem);
-	}
-
-  .tooltip__surface {
-    @include elevation-mixins.elevation(2, $query: $query);
-    align-items: flex-start;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    background-color: tooltip-theme.$rich-background-color;
-  }
 }

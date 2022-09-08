@@ -1,7 +1,27 @@
+@use '@material/elevation/mixins' as elevation-mixins;
+@use "@material/tooltip/tooltip-theme";
+@use '@material/tooltip/tooltip';
+
 :global {
+  @include tooltip.core-styles;
+
+  // Apply rich styles to standard tooltip.
+  // This is done because efforts to get rich tooltips working
+  // with SVG charts have failed.
+  // This code is modeled after the current version of @material/tooltip.
+  .bar-tooltip {
+
+    .tooltip__content {
+      margin: 0;
+    }
+
+    .tooltip__surface {
+      @include elevation-mixins.elevation(2);
+      background-color: tooltip-theme.$rich-background-color;
+    }
+  }
 
   #pointer-events {
-
     rect {
       cursor: pointer;
 
@@ -10,5 +30,10 @@
         outline: none;
       }
     }
+  }
+
+  // For unknown reasons, this style is not included in `tooltip.core-styles`.
+  .mdc-tooltip--shown .mdc-tooltip__surface-animation {
+    opacity: 1;
   }
 }

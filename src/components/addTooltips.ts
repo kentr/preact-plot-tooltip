@@ -42,7 +42,7 @@ function addTooltips({
             .append(() =>
               create("div")
                 .html(
-                  `<div class="mdc-tooltip__surface mdc-tooltip__surface-animation tooltip__surface">
+                  `<div class="mdc-tooltip__surface mdc-tooltip__surface-animation tooltip__surface mdc-tooltip--shown">
                     <div class="mdc-tooltip__content tooltip__content">
                       ${title.innerHTML.replace(/\n/, "<br />")}
                     </div>
